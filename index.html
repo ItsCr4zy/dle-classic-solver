@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dle-Solver</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<header>
+<h1>Dle-Solver</h1>
+<nav id="tabs" aria-label="Spiel wählen"></nav>
+</header>
+<p class="sub" id="sub"></p>
+<div class="grid">
+<section class="box">
+<h2>Deine Versuche</h2>
+<div class="add">
+<input type="text" id="inp" list="dl" autocomplete="off">
+<button class="btn" id="addb">Hinzufügen</button>
+</div>
+<datalist id="dl"></datalist>
+<p class="err" id="err"></p>
+<div class="tw"><table><thead id="thead"></thead><tbody id="rows"></tbody></table></div>
+<p class="hint">Tippe die Felder an, bis sie die Farben aus dem Spiel zeigen. Grau = nicht gesetzt, wird ignoriert. ↑ heißt „Lösung ist größer / später“, ≠ heißt „falsch, Richtung egal“.</p>
+<details id="gensbox" hidden><summary>Generationen</summary><div class="gens" id="gens"></div></details>
+<p class="note" id="note"></p>
+<p><button class="btn ghost" id="reset">Alles zurücksetzen</button></p>
+</section>
+<section class="box">
+<div class="screen">
+<div class="lbl">Noch möglich</div>
+<div class="count" id="cnt">–</div>
+<div class="lbl" style="margin-top:12px" id="bestl">Bester nächster Tipp</div>
+<div class="best" id="best">–</div>
+<div class="lbl" id="bestw"></div>
+</div>
+<h2>Kandidaten</h2>
+<p class="warn" id="warn" hidden></p>
+<ul class="c" id="list"></ul>
+</section>
+</div>
+<footer>Daten: PokeAPI, GeorgeAliquis/loldle-solver, DoubekSeth/Smashdle_Solver. Inoffizielles Hilfstool ohne Verbindung zu den Spielen.</footer>
+</main>
+<script src="data/pokedle.js"></script>
+<script src="data/loldle.js"></script>
+<script src="data/smashdle.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
