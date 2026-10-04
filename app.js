@@ -36,7 +36,8 @@ function key(g,c){let k=0;for(const at of game.attrs)k=k*RADIX[at.kind]+code(at,
 const pool=()=>game.items.filter(it=>!game.gens||gens.has(it.g));
 
 function candidates(){
-  const P=pool();
+  const guessed=new Set(G.map(g=>g.i));
+  const P=pool().filter(it=>!guessed.has(game.items.indexOf(it)));
   const scored=P.map(c=>{let v=0;for(const g of G)for(const at of game.attrs){const s=g.s[at.k];if(s!=="?"&&viol(at,game.items[g.i],c,s))v++}return{c,v}});
   const exact=scored.filter(x=>x.v===0).map(x=>x.c);
   if(exact.length||!scored.length)return{list:exact,fuzzy:0};
@@ -47,7 +48,8 @@ function bestGuess(C){
   if(C.length<=2)return C[0]?{it:C[0],e:1}:null;
   const size=game.attrs.reduce((p,a)=>p*RADIX[a.kind],1),cnt=new Int32Array(size),inC=new Set(C);
   let best=null,bs=Infinity;
-  for(const g of pool()){cnt.fill(0);for(const c of C)cnt[key(g,c)]++;let ss=0;for(let i=0;i<size;i++)ss+=cnt[i]*cnt[i];
+  const guessed=new Set(G.map(g=>game.items[g.i]));
+  for(const g of pool()){if(guessed.has(g))continue;cnt.fill(0);for(const c of C)cnt[key(g,c)]++;let ss=0;for(let i=0;i<size;i++)ss+=cnt[i]*cnt[i];
     const sc=ss-(inC.has(g)?.5:0);if(sc<bs){bs=sc;best=g}}
   return{it:best,e:(bs+.5)/C.length}
 }
