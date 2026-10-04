@@ -41,7 +41,6 @@ function buildFilters(){
     let vals=[...new Set(game.items.flatMap(it=>Array.isArray(it.v[at.k])?it.v[at.k]:[it.v[at.k]]))];
     vals.sort((a,b)=>typeof a==="number"?a-b:String(a).localeCompare(String(b),"de"));
     return `<label>${at.l}<select data-f="${at.k}"><option value="">Alle</option>${vals.map(v=>`<option value="${v}">${fmt(at,v)}</option>`).join("")}</select></label>`}).join("")}
-function applyGenDeps(){if(!game.gens)return;for(const it of game.items)if("fe" in it.v)it.v.fe=(it.ev||[]).some(g=>gens.has(g))?"Nein":"Ja"}
 const pool=()=>game.items.filter(it=>!game.gens||gens.has(it.g));
 
 function candidates(){
@@ -107,12 +106,12 @@ function selectGame(id){
   byName=new Map();game.items.forEach((it,i)=>{[label(it),it.n,it.a].forEach(x=>x&&byName.set(x.toLowerCase(),i))});
   $("dl").innerHTML=game.items.map(it=>`<option value="${label(it)}">`).join("");
   $("gensbox").hidden=!game.gens;
-  load();applyGenDeps();buildFilters();
+  load();buildFilters();
   document.querySelectorAll("[data-gen]").forEach(cb=>cb.checked=gens.has(+cb.dataset.gen));
   $("err").textContent="";render();reroll()
 }
 $("gens").innerHTML=[1,2,3,4,5,6,7,8,9].map(n=>`<label><input type="checkbox" data-gen="${n}"> Gen ${n}</label>`).join("");
-$("gens").addEventListener("change",e=>{const n=+e.target.dataset.gen;e.target.checked?gens.add(n):gens.delete(n);applyGenDeps();render();reroll()});
+$("gens").addEventListener("change",e=>{const n=+e.target.dataset.gen;e.target.checked?gens.add(n):gens.delete(n);render();reroll()});
 $("addb").onclick=()=>add($("inp").value);
 $("inp").addEventListener("keydown",e=>{if(e.key==="Enter")add($("inp").value)});
 $("reset").onclick=()=>{G=[];render();reroll()};
