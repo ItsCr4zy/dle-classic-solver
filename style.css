@@ -36,7 +36,7 @@ td.n{font-weight:600;white-space:nowrap;padding-right:6px}
 .x{border:0;background:none;color:var(--mid);font-size:1.1rem;padding:4px 6px}
 .hint,.note{font-size:.85rem;color:var(--mid);margin:12px 0 0}
 .screen{background:var(--screen);border:3px solid var(--ink);border-radius:4px;padding:14px;margin-bottom:14px}
-.count{font:700 2.4rem/1 "Pixelify Sans",monospace}
+.count{font:700 2.6rem/1 "IBM Plex Sans",system-ui,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .best{font:700 1.5rem/1.15 "Pixelify Sans",monospace;margin:4px 0 2px;word-break:break-word}
 .lbl{font-size:.85rem;color:var(--mid)}
 .screen .lbl{color:var(--ink);opacity:.8}
