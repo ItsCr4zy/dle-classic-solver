@@ -42,14 +42,14 @@ td.n{font-weight:600;white-space:nowrap;padding-right:6px}
 .screen .lbl{color:var(--ink);opacity:.8}
 .warn{font-size:.85rem;background:var(--y);color:#2b2000;border-radius:4px;padding:8px 10px;margin:0 0 10px}
 ul.c{list-style:none;margin:0;padding:0;max-height:420px;overflow-y:auto;overflow-x:hidden;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 12px;font-size:.9rem}
-ul.c li{padding:2px 0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ul.c li{padding:2px 0;min-width:0}
 @media (max-width:420px){ul.c{grid-template-columns:repeat(2,minmax(0,1fr))}}
-ul.c button{border:0;background:none;color:var(--ink);padding:0;text-align:left;text-decoration:underline dotted;text-underline-offset:3px}
+ul.c button{overflow-wrap:anywhere;border:0;background:none;color:var(--ink);padding:0;text-align:left;text-decoration:underline dotted;text-underline-offset:3px}
 .gens{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .gens label{display:flex;align-items:center;gap:4px;font-size:.85rem;border:2px solid var(--ink);border-radius:4px;padding:2px 8px;cursor:pointer}
 details{margin-top:14px}summary{cursor:pointer;font-weight:600}
 footer{margin-top:28px;font-size:.8rem;color:var(--mid)}
 .rand{margin-top:14px;padding-top:12px;border-top:2px dashed var(--ink)}
 .randrow{display:flex;align-items:center;gap:12px;margin-top:4px}
-.randname{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:0;background:none;padding:0;color:var(--ink);font:700 1.2rem/1.2 "Pixelify Sans",monospace;text-align:left;text-decoration:underline dotted;text-underline-offset:4px}
+.randname{flex:1;min-width:0;overflow-wrap:anywhere;border:0;background:none;padding:0;color:var(--ink);font:700 1.2rem/1.2 "Pixelify Sans",monospace;text-align:left;text-decoration:underline dotted;text-underline-offset:4px}
 .btn.small{padding:6px 10px;font-size:.9rem;flex-shrink:0}
