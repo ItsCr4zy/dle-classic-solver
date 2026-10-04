@@ -112,6 +112,9 @@ function selectGame(id){
 }
 $("gens").innerHTML=[1,2,3,4,5,6,7,8,9].map(n=>`<label><input type="checkbox" data-gen="${n}"> Gen ${n}</label>`).join("");
 $("gens").addEventListener("change",e=>{const n=+e.target.dataset.gen;e.target.checked?gens.add(n):gens.delete(n);render();reroll()});
+function setGens(list){gens=new Set(list);document.querySelectorAll("[data-gen]").forEach(cb=>cb.checked=gens.has(+cb.dataset.gen));render();reroll()}
+$("gall").onclick=()=>setGens([1,2,3,4,5,6,7,8,9]);
+$("gnone").onclick=()=>setGens([]);
 $("addb").onclick=()=>add($("inp").value);
 $("inp").addEventListener("keydown",e=>{if(e.key==="Enter")add($("inp").value)});
 $("reset").onclick=()=>{G=[];render();reroll()};
