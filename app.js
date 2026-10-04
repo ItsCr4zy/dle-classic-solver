@@ -4,7 +4,7 @@ const CYC={single:["?","g","r"],set:["?","g","y","r"],ptype:["?","g","y","r"],nu
 const RADIX={single:2,set:3,ptype:3,num:3};
 const ARROW={up:" ↑",down:" ↓",ne:" ≠"};
 const $=id=>document.getElementById(id);
-let randIdx=-1,gid,game,G=[],gens=new Set([1,2,3,4,5,6,7,8,9]),byName;
+let F={},randIdx=-1,gid,game,G=[],gens=new Set([1,2,3,4,5,6,7,8,9]),byName;
 
 const label=it=>it.a?it.n+" / "+it.a:it.n;
 const eqSet=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
@@ -33,11 +33,19 @@ function code(at,g,c){
     case"ptype":return cv===gv?0:(gv!=="Keiner"&&c.v[at.other]===gv)?1:2}
 }
 function key(g,c){let k=0;for(const at of game.attrs)k=k*RADIX[at.kind]+code(at,g,c);return k}
+const filterable=at=>at.kind!=="num"||at.labels||new Set(game.items.map(it=>it.v[at.k])).size<=40;
+function passF(it){for(const k in F){const v=it.v[k];if(Array.isArray(v)?!v.includes(F[k]):String(v)!==F[k])return false}return true}
+function buildFilters(){
+  F={};
+  $("filters").innerHTML=game.attrs.filter(filterable).map(at=>{
+    let vals=[...new Set(game.items.flatMap(it=>Array.isArray(it.v[at.k])?it.v[at.k]:[it.v[at.k]]))];
+    vals.sort((a,b)=>typeof a==="number"?a-b:String(a).localeCompare(String(b),"de"));
+    return `<label>${at.l}<select data-f="${at.k}"><option value="">Alle</option>${vals.map(v=>`<option value="${v}">${fmt(at,v)}</option>`).join("")}</select></label>`}).join("")}
 const pool=()=>game.items.filter(it=>!game.gens||gens.has(it.g));
 
 function candidates(){
   const guessed=new Set(G.map(g=>g.i));
-  const P=pool().filter(it=>!guessed.has(game.items.indexOf(it)));
+  const P=pool().filter(it=>passF(it)&&!guessed.has(game.items.indexOf(it)));
   const scored=P.map(c=>{let v=0;for(const g of G)for(const at of game.attrs){const s=g.s[at.k];if(s!=="?"&&viol(at,game.items[g.i],c,s))v++}return{c,v}});
   const exact=scored.filter(x=>x.v===0).map(x=>x.c);
   if(exact.length||!scored.length)return{list:exact,fuzzy:0};
@@ -71,6 +79,7 @@ function render(){
     ||`<tr><td colspan="${game.attrs.length+2}" style="color:var(--mid);padding:8px 2px">Noch kein Versuch. Starte mit dem Tipp rechts.</td></tr>`;
   const {list:C,fuzzy}=candidates();
   $("cnt").textContent=C.length;
+  $("cnt").previousElementSibling.textContent=Object.keys(F).length?"Noch möglich (gefiltert)":"Noch möglich";
   const w=$("warn");w.hidden=!fuzzy;
   if(fuzzy)w.textContent=`Kein Kandidat passt zu allen Feldern. Gezeigt werden die, bei denen ${fuzzy===1?"nur 1 Feld":fuzzy+" Felder"} abweicht. Prüf deine Farben, oder die Daten weichen hier vom Spiel ab.`;
   if(!C.length){$("bestl").textContent="Bester nächster Tipp";$("best").textContent="–";$("bestw").textContent=""}
@@ -97,7 +106,7 @@ function selectGame(id){
   byName=new Map();game.items.forEach((it,i)=>{[label(it),it.n,it.a].forEach(x=>x&&byName.set(x.toLowerCase(),i))});
   $("dl").innerHTML=game.items.map(it=>`<option value="${label(it)}">`).join("");
   $("gensbox").hidden=!game.gens;
-  load();
+  load();buildFilters();
   document.querySelectorAll("[data-gen]").forEach(cb=>cb.checked=gens.has(+cb.dataset.gen));
   $("err").textContent="";render();reroll()
 }
@@ -107,6 +116,8 @@ $("addb").onclick=()=>add($("inp").value);
 $("inp").addEventListener("keydown",e=>{if(e.key==="Enter")add($("inp").value)});
 $("reset").onclick=()=>{G=[];render();reroll()};
 $("reroll").onclick=reroll;
+$("filters").addEventListener("change",e=>{const k=e.target.dataset.f;if(!k)return;e.target.value?F[k]=e.target.value:delete F[k];e.target.classList.toggle("on",!!e.target.value);render()});
+$("fclear").onclick=()=>{F={};document.querySelectorAll("[data-f]").forEach(s=>{s.value="";s.classList.remove("on")});render()};
 document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
   if(t.dataset.game){location.hash=t.dataset.game}
   else if(t.dataset.k){const g=G[+t.dataset.i],at=game.attrs.find(a=>a.k===t.dataset.k),c=CYC[at.kind];g.s[at.k]=c[(c.indexOf(g.s[at.k])+1)%c.length];render()}
