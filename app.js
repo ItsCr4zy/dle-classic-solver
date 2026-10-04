@@ -97,7 +97,7 @@ function add(v){
 function selectGame(id){
   gid=ORDER.includes(id)?id:ORDER[0];game=GAMES[gid];
   document.documentElement.style.setProperty("--accent",game.accent||"#d6452f");
-  document.title=game.title+" Solver";
+  document.title="Dle-Classic-Solver – "+game.title;
   $("tabs").innerHTML=ORDER.map(k=>`<button data-game="${k}" aria-current="${k===gid}">${GAMES[k].title}</button>`).join("");
   $("sub").innerHTML=`Solver für den Classic-Modus von <a href="${game.url}" target="_blank" rel="noopener">${game.title}</a>. Rateversuch eintragen, Felder einfärben wie im Spiel, und rechts erscheint der Tipp, der am meisten aussortiert.`;
   $("note").textContent=[game.note,game.source].filter(Boolean).join(" ");
